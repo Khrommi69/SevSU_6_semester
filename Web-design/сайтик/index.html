@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Красивый и изящный сайт с анимацией и видео</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      filter: none;
+      transition: filter 0.5s;
+    }
+
+    .video-background video.inverted {
+      filter: invert(100%);
+    }
+
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      opacity: 0;
+      animation: fade-in 2s forwards;
+    }
+
+    .content.black-text {
+      color: #000;
+    }
+
+    .title {
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: rainbow-pulse 2s infinite;
+      background: linear-gradient(45deg, red, yellow, lime, aqua, blue, fuchsia, red);
+      background-size: 800% 800%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      color: #333333;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-image: url(image.jpg);
+      color: #fff;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes fade-in {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes rainbow-pulse {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="video-background">
+    <video id="bg-video" loop>
+      <source src="video/background-video.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео тег.
+    </video>
+  </div>
+
+  <div class="content">
+    <h1 class="title animation">ВИДЕОКРОЛИК</h1>
+    <button class="btn" onclick="toggleVideo()">ON/OFF</button>
+    <button class="btn" onclick="toggleInvert()">ИнВеРсИяИсРеВнИ</button>
+    <button class="btn" onclick="changeVideo()">change</button>
+  </div>
+
+  <script>
+    var video = document.getElementById('bg-video');
+    var content = document.querySelector('.content');
+
+    function toggleVideo() {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+
+    function toggleInvert() {
+      if (video.classList.contains('inverted')) {
+        video.classList.remove('inverted');
+        content.classList.remove('black-text');
+      } else {
+        video.classList.add('inverted');
+        content.classList.add('black-text');
+      }
+    }
+
+    function changeVideo() {
+      var fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'video/*';
+      fileInput.style.display = 'none';
+      fileInput.addEventListener('change', function(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          video.src = e.target.result;
+          video.load();
+          video.play();
+        }
+        reader.readAsDataURL(file);
+      });
+      document.body.appendChild(fileInput);
+      fileInput.click();
+      document.body.removeChild(fileInput);
+    }
+  </script>
+</body>
+</html>
